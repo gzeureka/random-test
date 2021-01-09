@@ -33,7 +33,7 @@
   )
 
 (defn print-distribution [m]
-  (println (apply sorted-map (-> (seq m) sort flatten)))
+  (println "Random numbers: " (apply sorted-map (-> (seq m) sort flatten)))
   (println "Stand deviation: " (standard-deviation (vals m)))
   )
 
@@ -42,7 +42,7 @@
         range (Integer/valueOf (or (second args) 10))]
     (println (format "Generating %d random integers between 0(inclusive) and %d(exclusive)" times range))
     (let [random-seq (gen-random-seq times range)]
-      (println random-seq)
+      ; (println "Random sequence: " random-seq)
       (-> (compute-distribution random-seq)
           print-distribution
           )
