@@ -1,5 +1,8 @@
 (ns random-test.core
-  (:gen-class))
+  (:require [clojure.math.numeric-tower :as math]
+            )
+  (:gen-class)
+  )
 
 (defn gen-random-seq [times range]
   (repeatedly times #(rand-int range))
@@ -13,8 +16,25 @@
             ) {} random-seq)
   )
 
+(defn average [num-seq]
+  (/ (apply + num-seq) (count num-seq)))
+
+(defn standard-deviation [num-seq]
+  (let [avg (average num-seq)]
+    (->> (map (fn [x]
+                (let [n (math/abs (- x avg))]
+                  (* n n)
+                  )
+                ) num-seq)
+         average
+         math/sqrt
+         )
+    )
+  )
+
 (defn print-distribution [m]
   (println (apply sorted-map (-> (seq m) sort flatten)))
+  (println "Stand deviation: " (standard-deviation (vals m)))
   )
 
 (defn -main [& args]
