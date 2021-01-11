@@ -32,19 +32,24 @@
     )
   )
 
-(defn print-distribution [m]
+(defn print-distribution [m rang]
   (println "Random numbers: " (apply sorted-map (-> (seq m) sort flatten)))
+  (when (< (count m) rang)
+    (let [nums (set (keys m))]
+      (println "Numbers absent: " (filter (complement nums) (range rang)))
+      )
+    )
   (println "Stand deviation: " (standard-deviation (vals m)))
   )
 
 (defn -main [& args]
   (let [times (Integer/valueOf (or (first args) 20))
-        range (Integer/valueOf (or (second args) 10))]
-    (println (format "Generating %d random integers between 0(inclusive) and %d(exclusive)" times range))
-    (let [random-seq (gen-random-seq times range)]
+        rang (Integer/valueOf (or (second args) 10))]
+    (println (format "Generating %d random integers between 0(inclusive) and %d(exclusive)" times rang))
+    (let [random-seq (gen-random-seq times rang)]
       ; (println "Random sequence: " random-seq)
       (-> (compute-distribution random-seq)
-          print-distribution
+          (#(print-distribution % rang))
           )
       )
     )
