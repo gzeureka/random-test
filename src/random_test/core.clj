@@ -36,7 +36,7 @@
   (println "Random numbers: " (apply sorted-map (-> (seq m) sort flatten)))
   (when (< (count m) rang)
     (let [nums (set (keys m))]
-      (println "Numbers absent: " (filter (complement nums) (range rang)))
+      (println (- rang (count m)) "numbers absent: " (filter (complement nums) (range rang)))
       )
     )
   (println "Stand deviation: " (standard-deviation (vals m)))
